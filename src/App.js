@@ -1,26 +1,43 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { Component }  from 'react';
 import './App.css';
 
-function App() {
-  return (
+class App extends Component {
+  constructor() {
+    super()
+
+    this.state = {
+      monsters: []
+    }
+  }
+
+  componentDidMount() {
+    this.fetchUsers();
+  }
+
+  fetchUsers = async () => {
+    try {
+      const resp = await fetch("https://jsonplaceholder.typicode.com/users");
+      const users = await resp.json();
+      this.setState({monsters: users });
+    } catch (err) {
+      console.log("Error fetching users: ", err);
+    }
+
+  }
+  render () {
+    return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload.
+          {this.state.monsters.map((monster, i) => {
+            return <h1 key={i}> {monster.name}</h1>
+          })}
         </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+          <button onClick={() => this.setState({string: "now"})}></button>
       </header>
     </div>
-  );
+    )
+  }
 }
 
 export default App;
