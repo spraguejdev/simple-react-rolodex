@@ -1,4 +1,5 @@
 import React, { Component }  from 'react';
+import { CardList } from "./components/card-list/card-list";
 import './App.css';
 
 class App extends Component {
@@ -6,7 +7,8 @@ class App extends Component {
     super()
 
     this.state = {
-      monsters: []
+      monsters: [],
+      searchField: ""
     }
   }
 
@@ -25,16 +27,13 @@ class App extends Component {
 
   }
   render () {
+    const { monsters, searchField } = this.state; 
+    const filteredMonsters = monsters.filter(monster => monster.name.toLowerCase().includes(searchField.toLowerCase()))
+
     return (
     <div className="App">
-      <header className="App-header">
-        <p>
-          {this.state.monsters.map((monster, i) => {
-            return <h1 key={i}> {monster.name}</h1>
-          })}
-        </p>
-          <button onClick={() => this.setState({string: "now"})}></button>
-      </header>
+        <input type="search" placeholder="Search Monsters" onChange={e => this.setState({searchField: e.target.value})}></input>
+        <CardList monsters={filteredMonsters} />
     </div>
     )
   }
